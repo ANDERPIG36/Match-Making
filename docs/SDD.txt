@@ -1,0 +1,63 @@
+GUI Client:
+    -menu:
+        -gioca
+        -opz
+        -esci (chiude programma)
+    -opzioni:
+        -setta livello (per debug, di base scala giocando)
+        -setta Xp(per debug, di base scala giocando)
+        -setta nickname
+        -eventuale pfp
+    -gioca:
+        -(manda dati al server)
+        -attesa:
+            -esci(dice al client di togliere giocatore)
+        -trovata partita:
+            -lancai gioco in fork
+            -va in background in attesa che il gioco termini
+
+server senza gui/gui minimale admin:
+    -crea x partite, ogni partita ha un livello medio di squadra
+    -assegna i giocatori secondo: dei criteri
+    -i livelli dei giocatori devono avere valori compatibili tra loro
+    -i livelli della squadra sommati devono corrispondere tra le 2 squadre
+    -i livelli dei giocatori devono rientrare in un certo margine tra loro
+    -quando la partita ha raggiunto i giocatori necessari la avvia
+    -a partita avviata fa una fork del gioco
+
+struttura programmi
+    -gioco: viene lanciato in fork dal lato client e server
+    -server: gestisce le partite
+    -client: gestisce i dati del giocatore
+
+gioco:
+    -livelli: X livelli che scalano con l'xp, l'xp guadagnata cambia in
+    base al grado sfida del nemico(livello/differenza di livello)
+    -le stats del giocatore cambiano in base al livello
+    -mini gioco pvp XvsX con sistema turn press
+    -l'ordine dei turni è definito in base alle stats
+    -stats:
+        -FOR(danni)
+        -DES(velocità: iniziativa turno e schivata/critici)
+        -COS(resistenza danni)
+        -INT(attacchi magici)
+        -SAG(resistenza attacchi magici)
+        -CAR(per abilità di buff squadra/debuff nemico)
+        -HP: punti vita
+        -SP: punti per incantesimi
+    -attacchi:
+        -attacco base FOR
+        -attacco potente(consuma HP) FOR
+        -magia(consuma sp) INT
+        -magia buff(consuma sp) CAR:
+        -magia debuff(consuma sp) CAR:
+
+-gioco server:
+    -il server apre un gestore del gioco,
+    -riceve le azioni dal lato giocatore fa avvenire il turno
+    -manda al giocatore lo stato partita aggiornato
+
+-gioco client:
+    -manda al client l'azione del giocatore
+    -resta in attesa del esecuzione del turno
+    -riceve dal server lo stato partita e lo elabora

@@ -16,15 +16,17 @@ public class Main {
         Graphics graphics = new Graphics();
 
         try {
-            graphics.label.setText("Apertura connessione...");
-            socketAccettazione = new ServerSocket(50000);
-            graphics.label.setText("Connessione pronta...");    
-            Socket socketServer = socketAccettazione.accept();
-            //attende la connessione del client
-            graphics.label.setText("Connesso:"+s.getInetAddress().toString());
+            socketAccettazione = new ServerSocket(50000);//apre sulla porta 50000    
+            while(true){
+                Socket socketServer = socketAccettazione.accept();
+                //attende una connessione
+                ClientHandler handler = new ClientHandler(socket); //crea un handler per il client appena connesso
+                Thread thread = new Thread(handler); //crea il thread del handler
+                thread.start(); //avvia il thread
+            }
         } catch(IOException ex) {
             graphics.label.setText("Errore di connessione!");
-            System.out.println("Errore: "+e.getMessage());
+            System.out.println("Errore: "+ex.getMessage());
         }
     }   
 }

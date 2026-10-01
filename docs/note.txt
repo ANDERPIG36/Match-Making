@@ -1,3 +1,23 @@
-librerie:
-socket:
-grafica:
+swing
+porta d'ascolto server: 50000
+nPlayer:5
+lvl:1-100
+
+flow server matchmaking:
+server si apre e apre la porta di ascolto,
+loop:
+-
+attende,
+riceve dati dal client,
+cerca una partita con criteri validi o la crea,
+se una partita arriva al completo la avvia,
+    manda al client un messaggio di avvio con lo stato partita,
+    avvia il gioco facendo una fork,
+-
+
+flow client:
+il client si connette alla porta di ascolto,
+invia i suoi dati,
+attende il matchmaking con possibilità di ritiro,
+riceve il messaggio di partita trovata e lancia in fork il gioco:
+

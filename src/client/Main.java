@@ -27,5 +27,17 @@ public class Main {
 
     public void start() throws IOException {
 
+        //dati da poi rendere classe player
+        String nickname = "NomeProvvisorio";
+        int livello = 7;
+
+        // Invio dei dati al server
+        out.println(nickname);
+        out.println(livello);
+
+        // Aspetta la risposta del server
+        String risposta = in.readLine();
+
+        System.out.println("Risposta del server: " + risposta);
     }
 }

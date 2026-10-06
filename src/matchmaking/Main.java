@@ -13,8 +13,6 @@ public class Main {
         PrintWriter out;
         BufferedReader in;
 
-        Graphics graphics = new Graphics();
-
         try {
             socketAccettazione = new ServerSocket(50000);//apre sulla porta 50000    
             while(true){
@@ -25,7 +23,6 @@ public class Main {
                 thread.start(); //avvia il thread
             }
         } catch(IOException ex) {
-            graphics.label.setText("Errore di connessione!");
             System.out.println("Errore: "+ex.getMessage());
         }
     }   

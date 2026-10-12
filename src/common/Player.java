@@ -6,12 +6,12 @@ public class Player implements Serializable { //serializable è per la conversio
     private static final long serialVersionUID = 1L; //sempre per la serializzazione sovraccitata
     private String name;
     private int lvl;
-    private String ipAdress;
+    private String ipAddress;
 
-    public Player(String name, int lvl, String ipAdress){
+    public Player(String name, int lvl, String ipAddress){
         this.name=name;
         this.lvl=lvl;
-        this.ipAdress=ipAdress;
+        this.ipAddress=ipAddress;
     }
 
     public String getName(){

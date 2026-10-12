@@ -3,6 +3,7 @@ package client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -13,9 +14,9 @@ import common.*;
 
 public class Main {
     
-    private Graphics graphics;
+    private static Graphics graphics;
 
-    public void main(String[] args) {
+    public static void main(String[] args) {
         //avvia la grafica
         graphics = new Graphics((nickname, livello) -> {
             Player player = new Player(nickname, livello, "127.0.0.1");
@@ -23,20 +24,21 @@ public class Main {
         });
     }
 
-    private void connessioneServer(String nickname, int livello) {
+    private static void connessioneServer(Player player) {
         new Thread(() -> {
             try(Socket s = new Socket("127.0.0.1", 50000);
-                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                //PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+                ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream()); //al posto di PRintWriter per passare oggetti
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()))) {
 
-                // Invio dei dati al server
-                out.println(nickname);
-                out.println(livello);
+                //invio dei dati al server
+                oos.writeObject(player);
+                oos.flush();
 
-                // Attesa risposta del server
+                //attende la risposta del server
                 String risposta = in.readLine();
 
-                // Aggiorniamo la UI in modo sicuro
+                //aggiorna la UI in modo sicuro per evitare errori a runtime
                 SwingUtilities.invokeLater(() -> {
                     graphics.setStatus("Risposta: " + risposta, true);
                 });

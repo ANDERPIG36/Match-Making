@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import common.*;
+import java.util.function.BiConsumer;
 
 public class Graphics extends JFrame {
 
@@ -19,7 +20,7 @@ public class Graphics extends JFrame {
     private JTextField nameField;
     private JTextField lvlField;
 
-    public Graphics() {
+    public Graphics(BiConsumer<String, Integer> onPlayAction) {
         setTitle("MatchMaking - Client");
         setSize(350, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,26 +50,33 @@ public class Graphics extends JFrame {
             String nickname = nameField.getText().trim();
             String livelloStr = lvlField.getText().trim();
 
-            //per non lasciare campi vuoti
-            if (nickname.isEmpty() || livelloStr.isEmpty()) {
+            if(nickname.isEmpty() || livelloStr.isEmpty()) {
                 label.setText("Compila tutti i campi");
                 return;
             }
 
+            int livello;
             try {
-                int livello = Integer.parseInt(livelloStr);
-                sendButton.setEnabled(false);
-                label.setText("Connessione in corso...");
+                livello = Integer.parseInt(livelloStr);
             } catch (NumberFormatException ex) {
                 label.setText("Il livello deve essere un numero");
+                return;
             }
             
-            //esegue l'azione passata dal Main
+            sendButton.setEnabled(false);//evita problemi di doppio click
+            label.setText("Connessione in corso...");
+            
+            //esegue l'azione passata dal main
             onPlayAction.accept(nickname, livello);
-        
         });
 
         setVisible(true);
+    }
+
+    //aggiorna lo stato della label
+    public void setStatus(String text, boolean enableButton) {
+        label.setText(text);
+        sendButton.setEnabled(enableButton);
     }
 
 }

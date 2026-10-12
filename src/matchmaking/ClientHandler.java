@@ -1,7 +1,10 @@
+package matchmaking;
+
 import java.io.*;
 import java.net.Socket;
+import common.*;
 
-public class ClientHandler implements Runnable {
+public class ClientHandler implements Runnable { //runnable serve per il thread
 
     private Socket socket;
 
@@ -30,8 +33,8 @@ public class ClientHandler implements Runnable {
 
             //mandare al matchmaker
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

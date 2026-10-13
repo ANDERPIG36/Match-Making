@@ -14,19 +14,23 @@ import common.*;
 
 public class Main {
     public static void main(String[] args) {
-        PrintWriter out;
-        BufferedReader in;
 
-        try(ServerSocket socketAccettazione = new ServerSocket(50000)) {
+        Settings settings = new Settings();
+        Matchmaker matchmaker = new Matchmaker();
+
+        try (ServerSocket socketAccettazione = new ServerSocket(settings.getServerSocket())) {
+            System.out.println("Server avviato sulla porta " + settings.getServerSocket());
             while(true){
                 Socket socketServer = socketAccettazione.accept();
-                //attende una connessione
-                ClientHandler handler = new ClientHandler(socketServer); //crea un handler per il client appena connesso
-                Thread thread = new Thread(handler); //crea il thread del handler
-                thread.start(); //avvia il thread
+                System.out.println("Nuovo giocatore connesso");
+                
+                // Passiamo il socket e il matchmaker al handler
+                ClientHandler handler = new ClientHandler(socketServer, matchmaker); 
+                Thread thread = new Thread(handler); 
+                thread.start(); 
             }
         } catch(IOException ex) {
-            System.out.println("Errore: "+ex.getMessage());
+            System.out.println("Errore server: " + ex.getMessage());
         }
-    }   
+    }
 }

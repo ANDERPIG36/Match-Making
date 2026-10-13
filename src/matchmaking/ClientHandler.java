@@ -7,34 +7,45 @@ import common.*;
 public class ClientHandler implements Runnable { //runnable serve per il thread
 
     private Socket socket;
+    private Matchmaker matchmaker;
+    private Player player;
 
-    private BufferedReader in;
-    private PrintWriter out;
-
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, Matchmaker matchmaker) {
         this.socket = socket;
+        this.matchmaker = matchmaker;
     }
 
     @Override
     public void run() {
 
         try {
-            in = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream())
-            );
-
-            out = new PrintWriter(
-                    socket.getOutputStream(), true
-            );
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             //riceve i dati dal client
-            String nickname = in.readLine();
-            int livello = Integer.parseInt(in.readLine());
+            this.player = (Player) ois.readObject();
 
-            //mandare al matchmaker
+            System.out.println("Ricevuto giocatore -> Nome: " + player.getName() + ", Livello: " + player.getLvl());
 
-        } catch (IOException ex) {
+            //manda al matchmaker
+            matchmaker.aggiungiGiocatore(this);
+
+        } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    //per mandare risposta al client
+    public void inviaMessaggio(String messaggio) {
+        try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(messaggio);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

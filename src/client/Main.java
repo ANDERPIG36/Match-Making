@@ -17,6 +17,9 @@ public class Main {
     private static Graphics graphics;
 
     public static void main(String[] args) {
+
+        Settings settings = new Settings();
+        
         //avvia la grafica
         graphics = new Graphics((nickname, livello) -> {
             Player player = new Player(nickname, livello, "127.0.0.1");
@@ -25,8 +28,11 @@ public class Main {
     }
 
     private static void connessioneServer(Player player) {
+        
+        Settings settings = new Settings();
+
         new Thread(() -> {
-            try(Socket s = new Socket("127.0.0.1", 50000);
+            try(Socket s = new Socket("127.0.0.1", settings.getServerSocket());
                 //PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                 ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream()); //al posto di PRintWriter per passare oggetti
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()))) {

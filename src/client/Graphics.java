@@ -38,7 +38,7 @@ public class Graphics extends JFrame {
         panel.add(new JLabel("Nickname:"));
         panel.add(nameField);
         
-        panel.add(new JLabel("Livello:"));
+        panel.add(new JLabel("Livello(1-20):"));
         panel.add(lvlField);
 
         panel.add(sendButton);
@@ -62,6 +62,11 @@ public class Graphics extends JFrame {
                 label.setText("Il livello deve essere un numero");
                 return;
             }
+
+            if(livello>20||livello<1){
+                label.setText("Il livello deve andare da 1 a 20");
+                return;
+            }
             
             sendButton.setEnabled(false);//evita problemi di doppio click
             label.setText("Connessione in corso...");
@@ -78,5 +83,4 @@ public class Graphics extends JFrame {
         label.setText(text);
         sendButton.setEnabled(enableButton);
     }
-
 }

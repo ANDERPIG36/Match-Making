@@ -1,6 +1,6 @@
 swing
 porta d'ascolto server: 50000
-nPlayer:5
+nPlayer:3
 lvl:1-100
 
 flow server matchmaking:
@@ -24,3 +24,8 @@ riceve il messaggio di partita trovata e lancia in fork il gioco:
 gioco:
 ???
 
+da finire:
+-algoritmo di matchmaking
+-risposta al client
+-stress tester
+-eventuale avvio del gioco

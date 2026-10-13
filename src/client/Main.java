@@ -42,11 +42,11 @@ public class Main {
                 oos.flush();
 
                 //attende la risposta del server
-                String risposta = in.readLine();
+                Match matchTrovato = (Match) ois.readObject();
 
                 //aggiorna la UI in modo sicuro per evitare errori a runtime
                 SwingUtilities.invokeLater(() -> {
-                    graphics.setStatus("Risposta: " + risposta, true);
+                    graphics.setStatus("Partita trovata", true);
                 });
 
             } catch(IOException ex) {

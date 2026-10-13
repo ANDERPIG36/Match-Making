@@ -21,6 +21,7 @@ public class Graphics extends JFrame {
     private JTextField lvlField;
 
     public Graphics(BiConsumer<String, Integer> onPlayAction) {
+        Settings settings = new Settings();
         setTitle("MatchMaking - Client");
         setSize(350, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +39,7 @@ public class Graphics extends JFrame {
         panel.add(new JLabel("Nickname:"));
         panel.add(nameField);
         
-        panel.add(new JLabel("Livello(1-20):"));
+        panel.add(new JLabel("Livello(1-"+settings.getLivelloMassimo()+"):"));
         panel.add(lvlField);
 
         panel.add(sendButton);
@@ -63,8 +64,8 @@ public class Graphics extends JFrame {
                 return;
             }
 
-            if(livello>20||livello<1){
-                label.setText("Il livello deve andare da 1 a 20");
+            if(livello>settings.getLivelloMassimo()||livello<1){
+                label.setText("Il livello deve andare da 1 a " + settings.getLivelloMassimo());
                 return;
             }
             

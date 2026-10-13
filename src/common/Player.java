@@ -2,7 +2,7 @@ package common;
 
 import java.io.Serializable;
 
-public class Player implements Serializable { //serializable è per la conversione del oggetto player per mandarla più comodamente al server
+public class Player implements Serializable{ //serializable è per la conversione del oggetto player per mandarla più comodamente al server
     private static final long serialVersionUID = 1L; //sempre per la serializzazione sovraccitata
     private String name;
     private int lvl;

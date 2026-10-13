@@ -20,7 +20,7 @@ public class ClientHandler implements Runnable { //runnable serve per il thread
 
         try {
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 
             //riceve i dati dal client
             this.player = (Player) ois.readObject();
@@ -30,6 +30,10 @@ public class ClientHandler implements Runnable { //runnable serve per il thread
             //manda al matchmaker
             matchmaker.aggiungiGiocatore(this);
 
+            //mettere che fa un ciclo di attesa per tenere la connesione
+
+            //mettere risposta al client
+            
         } catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }

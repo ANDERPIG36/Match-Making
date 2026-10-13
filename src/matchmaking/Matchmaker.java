@@ -6,7 +6,7 @@ import common.*;
 
 public class Matchmaker {
 
-    // Lista dei client in attesa di trovare una partita
+    //elenco client in attesa di trovare partita
     private List<ClientHandler> giocatoriInAttesa = new ArrayList<>();
 
     public synchronized void aggiungiGiocatore(ClientHandler handler) {

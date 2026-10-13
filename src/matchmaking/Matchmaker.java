@@ -26,15 +26,21 @@ public class Matchmaker{
         }
 
     }
+    
+    private void sortPerLivello() {
+        for (int i = 0; i < this.giocatoriInAttesa.size() - 1; i++) {
+            for (int j = 0; j < this.giocatoriInAttesa.size() - 1 - i; j++) {
 
-    private synchronized void sortPerLivello(){
-        for (int i=0; i<this.giocatoriInAttesa.size()-1; i++) {
-            for (int j=0; j<this.giocatoriInAttesa.size()-1-i; j++) {
-                if (this.giocatoriInAttesa.get(j) > this.giocatoriInAttesa.get(j+1)) {
-                    int temp=this.giocatoriInAttesa.get(j);
+                if (this.giocatoriInAttesa.get(j).getPlayer().getLvl()
+                        > this.giocatoriInAttesa.get(j + 1).getPlayer().getLvl()) {
 
-                    this.giocatoriInAttesa.set(j,this.giocatoriInAttesa.get(j+1));
-                    this.giocatoriInAttesa.set(j+1,temp);
+                    ClientHandler temp = this.giocatoriInAttesa.get(j);
+
+                    this.giocatoriInAttesa.set(
+                        j, this.giocatoriInAttesa.get(j + 1)
+                    );
+
+                    this.giocatoriInAttesa.set(j + 1, temp);
                 }
             }
         }

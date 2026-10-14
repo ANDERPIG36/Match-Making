@@ -3,6 +3,7 @@ package client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -13,29 +14,28 @@ import java.awt.*;
 import common.*;
 
 public class Main {
-    
+
     private static Graphics graphics;
 
     public static void main(String[] args) {
 
         Settings settings = new Settings();
-        
+
         //avvia la grafica
         graphics = new Graphics((nickname, livello) -> {
-            Player player = new Player(nickname, livello, "127.0.0.1");
+            Player player = new Player(nickname, livello, "127.0.0.1");//ip in realtà è superfluo in questo contesto
             connessioneServer(player);
         });
     }
 
     private static void connessioneServer(Player player) {
-        
+
         Settings settings = new Settings();
 
         new Thread(() -> {
             try(Socket s = new Socket("127.0.0.1", settings.getServerSocket());
-                //PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-                ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream()); //al posto di PRintWriter per passare oggetti
-                BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()))) {
+                ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+                ObjectInputStream ois = new ObjectInputStream(s.getInputStream())) {
 
                 //invio dei dati al server
                 oos.writeObject(player);
@@ -49,7 +49,7 @@ public class Main {
                     graphics.setStatus("Partita trovata", true);
                 });
 
-            } catch(IOException ex) {
+            } catch(IOException | ClassNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 SwingUtilities.invokeLater(() -> {
                     graphics.setStatus("Errore di connessione!", true);

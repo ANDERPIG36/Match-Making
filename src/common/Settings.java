@@ -16,7 +16,7 @@ public class Settings{
     public int getServerSocket(){
         return serverSocket;
     }
-    public int getGiocatirSquadra(){
+    public int getGiocatoriSquadra(){
         return giocatoriSquadra;
     }
     public int getDifferenzaLivello(){

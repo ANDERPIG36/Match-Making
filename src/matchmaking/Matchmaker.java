@@ -9,6 +9,7 @@ public class Matchmaker{
     //elenco client in attesa di trovare partita
     private List<ClientHandler> giocatoriInAttesa = new ArrayList<>();
     private List<ClientHandler> giocatoriNelMatch = new ArrayList<>();
+    Settings settings = new Settings();
 
     public synchronized void aggiungiGiocatore(ClientHandler handler) {
         //aggiunge giocatore alla lista d'attesa
@@ -19,7 +20,8 @@ public class Matchmaker{
         if(matchDisponibile()){
             //crea game
             Match match = new Match();
-            for(int i=0; i<settings.giocatoriSquadra*4; i=i+2){//così funziona solo se sono i primi 6 da prendere
+            for(int i=0; i<settings.getGiocatoriSquadra()*2; i=i+2){//così funziona solo se sono i primi 6 da prendere
+                giocatoriInAttesa.removeAll(giocatoriNelMatch);
                 match.aggiungiA1(giocatoriNelMatch.get(i).getPlayer());
                 match.aggiungiA2(giocatoriNelMatch.get(i+1).getPlayer());
             }
@@ -31,6 +33,7 @@ public class Matchmaker{
     }
     
     private void sortPerLivello(){
+
         for (int i=0; i<this.giocatoriInAttesa.size()-1; i++){
             for (int j=0; j<this.giocatoriInAttesa.size()-1-i; j++){
                 if (this.giocatoriInAttesa.get(j).getPlayer().getLvl()>this.giocatoriInAttesa.get(j+1).getPlayer().getLvl()) {
@@ -43,17 +46,16 @@ public class Matchmaker{
     }
 
     private boolean matchDisponibile(){
-        for (int i=0; i<giocatoriInAttesa.size(); i++){
+        giocatoriNelMatch.clear();
+        int n = settings.getGiocatoriSquadra()*2;
+
+        for (int i=0; i+n<=giocatoriInAttesa.size(); i++){
             int min = giocatoriInAttesa.get(i).getPlayer().getLvl();
-            int j=i;
+            int max = giocatoriInAttesa.get(i+n-1).getPlayer().getLvl();
 
-            while(j<giocatoriInAttesa.size() && giocatoriInAttesa.get(j).getPlayer().getLvl()-min <= 2*settings.getDifferenzaLivello()) {
-                j++;
-            }
-
-            if(j-i >= settings.getGiocatoriSquadra()*2) {
-                for (int k=i; k<j; k++){
-                    giocatoriNelMatch.add(giocatoriInAttesa.get(k).getPlayer());
+            if (max-min <= settings.getDifferenzaLivello()) {
+                for (int k=i; k<i+n; k++){
+                    giocatoriNelMatch.add(giocatoriInAttesa.get(k));
                 }
                 return true;
             }

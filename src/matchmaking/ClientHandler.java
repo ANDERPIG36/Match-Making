@@ -9,6 +9,7 @@ public class ClientHandler implements Runnable { //runnable serve per il thread
     private Socket socket;
     private Matchmaker matchmaker;
     private Player player;
+    private ObjectOutputStream oos;
 
     public ClientHandler(Socket socket, Matchmaker matchmaker) {
         this.socket = socket;
@@ -20,10 +21,11 @@ public class ClientHandler implements Runnable { //runnable serve per il thread
 
         try {
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
 
             //riceve i dati dal client
             this.player = (Player) ois.readObject();
+            player.setIpAddress(socket.getInetAddress().getHostAddress());
 
             System.out.println("Ricevuto giocatore -> Nome: " + player.getName() + ", Livello: " + player.getLvl());
 
@@ -46,7 +48,6 @@ public class ClientHandler implements Runnable { //runnable serve per il thread
     //per mandare risposta al client
     public void inviaMessaggio(Match match) {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
             oos.writeObject(match);
             oos.flush();
         } catch (IOException e) {

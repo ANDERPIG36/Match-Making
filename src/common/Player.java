@@ -6,7 +6,7 @@ public class Player implements Serializable{ //serializable è per la conversion
     private static final long serialVersionUID = 1L; //sempre per la serializzazione sovraccitata
     private String name;
     private int lvl;
-    private String ipAddress;
+    private String ipAddress;//ip in realtà è superfluo in questo contesto in quanto usato nella connesione socket
 
     public Player(String name, int lvl, String ipAddress){
         this.name=name;

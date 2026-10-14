@@ -44,10 +44,11 @@ public class ClientHandler implements Runnable { //runnable serve per il thread
     }
 
     //per mandare risposta al client
-    public void inviaMessaggio(String messaggio) {
+    public void inviaMessaggio(Match match) {
         try {
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            out.println(messaggio);
+            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+            oos.writeObject(match);
+            oos.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,7 +8,7 @@ public class Matchmaker{
 
     //elenco client in attesa di trovare partita
     private List<ClientHandler> giocatoriInAttesa = new ArrayList<>();
-    private List<ClientHandler> giocatorNelMatch = new ArrayList<>();
+    private List<ClientHandler> giocatoriNelMatch = new ArrayList<>();
     private int livelloMedioMatch;
 
     public synchronized void aggiungiGiocatore(ClientHandler handler) {
@@ -19,12 +19,15 @@ public class Matchmaker{
         //controlla se ha senso creare un game
         if(matchDisponibile()){
             //crea game
-            Match match = new Match(livelloMedio);
-            for(int i=settings.giocatoriSquadra*4; i<0; i+2){//così funziona solo se sono i primi 6 da prendere
-                Match.aggiungiA1(giocatoriNelMatch.get(i).getPlayer());
-                Match.aggiungiA2(giocatoriNelMatch.get(i+1).getPlayer());
+            Match match = new Match(livelloMedioMatch);
+            for(int i=0; i<settings.giocatoriSquadra*4; i=i+2){//così funziona solo se sono i primi 6 da prendere
+                match.aggiungiA1(giocatoriNelMatch.get(i).getPlayer());
+                match.aggiungiA2(giocatoriNelMatch.get(i+1).getPlayer());
             }
             //risposta al client
+            for(ClientHandler giocatore : giocatoriNelMatch){
+                giocatore.inviaMessaggio(match);
+            }
         }
     }
     
@@ -41,6 +44,22 @@ public class Matchmaker{
     }
 
     private boolean matchDisponibile(){
+        for (int i=0; i<giocatoriInAttesa.size(); i++){
+            int min = giocatoriInAttesa.get(i).getPlayer().getLvl();
+            int j=i;
 
+            while(j<giocatoriInAttesa.size() && giocatoriInAttesa.get(j).getPlayer().getLvl()-min <= 2*settings.getDifferenzaLivello()) {
+                j++;
+            }
+
+            if(j-i >= settings.getGiocatoriSquadra()*2) {
+                for (int k=i; k<j; k++){
+                    giocatoriNelMatch.add(giocatoriInAttesa.get(k).getPlayer());
+                }
+                this.livelloMedioMatch=X;
+                return true;
+            }
+        }
+        return false;
     }
 }

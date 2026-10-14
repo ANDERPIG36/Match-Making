@@ -25,7 +25,12 @@ gioco:
 ???
 
 da finire:
--algoritmo di matchmaking
+-algoritmo di matchmaking(da fixare)
 -risposta al client
 -stress tester
 -eventuale avvio del gioco
+
+errori:
+-tipo delle liste di matchmaker non corrispondente
+-matchDisponibile() seleziona più del totale dei giocatori di un match
+-errori in oss ois nei main e cose varie

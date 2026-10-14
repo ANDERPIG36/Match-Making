@@ -9,7 +9,6 @@ public class Matchmaker{
     //elenco client in attesa di trovare partita
     private List<ClientHandler> giocatoriInAttesa = new ArrayList<>();
     private List<ClientHandler> giocatoriNelMatch = new ArrayList<>();
-    private int livelloMedioMatch;
 
     public synchronized void aggiungiGiocatore(ClientHandler handler) {
         //aggiunge giocatore alla lista d'attesa
@@ -19,7 +18,7 @@ public class Matchmaker{
         //controlla se ha senso creare un game
         if(matchDisponibile()){
             //crea game
-            Match match = new Match(livelloMedioMatch);
+            Match match = new Match();
             for(int i=0; i<settings.giocatoriSquadra*4; i=i+2){//così funziona solo se sono i primi 6 da prendere
                 match.aggiungiA1(giocatoriNelMatch.get(i).getPlayer());
                 match.aggiungiA2(giocatoriNelMatch.get(i+1).getPlayer());
@@ -56,7 +55,6 @@ public class Matchmaker{
                 for (int k=i; k<j; k++){
                     giocatoriNelMatch.add(giocatoriInAttesa.get(k).getPlayer());
                 }
-                this.livelloMedioMatch=X;
                 return true;
             }
         }

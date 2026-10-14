@@ -9,12 +9,10 @@ public class Match implements Serializable {
 
     private List<Player> giocatoriSquadra1;
     private List<Player> giocatoriSquadra2;
-    private int livelloMedio;
 
-    public Match(int livelloMedio) {
+    public Match() {
         this.giocatoriSquadra1 = new ArrayList<>();
         this.giocatoriSquadra2 = new ArrayList<>();
-        this.livelloMedio = livelloMedio;
     }
 
     public List<Player> getGiocatoriSquadra1() {
@@ -31,17 +29,9 @@ public class Match implements Serializable {
         this.giocatoriSquadra2 = giocatoriSquadra2;
     }
 
-    public int getLivelloMedio() {
-        return livelloMedio;
-    }
-    public void setLivelloMedio(int livelloMedio) {
-        this.livelloMedio = livelloMedio;
-    }
-
     public void aggiungiA1(Player player) {
         giocatoriSquadra1.add(player);
     }
-
     public void aggiungiA2(Player player) {
         giocatoriSquadra2.add(player);
     }

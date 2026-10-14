@@ -19,11 +19,12 @@ public class Graphics extends JFrame {
     private JButton sendButton;
     private JTextField nameField;
     private JTextField lvlField;
+    private JTextArea areaCompagni;
 
     public Graphics(BiConsumer<String, Integer> onPlayAction) {
         Settings settings = new Settings();
         setTitle("MatchMaking - Client");
-        setSize(350, 250);
+        setSize(350, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -46,6 +47,10 @@ public class Graphics extends JFrame {
         panel.add(label); //stato server
 
         add(panel);
+
+        areaCompagni = new JTextArea(8, 20);
+        areaCompagni.setEditable(false);
+        add(new JScrollPane(areaCompagni), BorderLayout.SOUTH);
 
         sendButton.addActionListener(e -> {
             String nickname = nameField.getText().trim();
@@ -71,6 +76,7 @@ public class Graphics extends JFrame {
             
             sendButton.setEnabled(false);//evita problemi di doppio click
             label.setText("Connessione in corso...");
+            areaCompagni.setText("");
             
             //esegue l'azione passata dal main
             onPlayAction.accept(nickname, livello);
@@ -83,5 +89,20 @@ public class Graphics extends JFrame {
     public void setStatus(String text, boolean enableButton) {
         label.setText(text);
         sendButton.setEnabled(enableButton);
+    }
+
+    //mostra la lista dei compagni nella finestra
+    public void mostraPartita(Match match) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SQUADRA 1\n");
+        for (Player p : match.getGiocatoriSquadra1()) {
+            sb.append(String.format("  %s  -  %s  -  lvl %d\n", p.getName(), p.getIpAddress(), p.getLvl()));
+        }
+        sb.append("\nSQUADRA 2\n");
+        for (Player p : match.getGiocatoriSquadra2()) {
+            sb.append(String.format("  %s  -  %s  -  lvl %d\n", p.getName(), p.getIpAddress(), p.getLvl()));
+        }
+        areaCompagni.setText(sb.toString());
+        setStatus("Partita trovata", true);
     }
 }

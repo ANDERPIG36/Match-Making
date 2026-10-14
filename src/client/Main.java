@@ -46,7 +46,7 @@ public class Main {
 
                 //aggiorna la UI in modo sicuro per evitare errori a runtime
                 SwingUtilities.invokeLater(() -> {
-                    graphics.setStatus("Partita trovata", true);
+                    graphics.mostraPartita(matchTrovato);
                 });
 
             } catch(IOException | ClassNotFoundException ex) {
